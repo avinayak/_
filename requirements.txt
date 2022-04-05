@@ -1,0 +1,7 @@
+jinja2
+tqdm
+colorthief
+colorama
+lxml
+requests
+imagehas
