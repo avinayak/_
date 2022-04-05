@@ -4,4 +4,4 @@ colorthief
 colorama
 lxml
 requests
-imagehas
+imagehash
