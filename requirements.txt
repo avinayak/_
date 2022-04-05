@@ -5,3 +5,4 @@ colorama
 lxml
 requests
 imagehash
+termcolor
