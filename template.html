@@ -1,64 +1,81 @@
 <html>
-  <head>
-  <title>_{{index}}</title>
-   
-    <style>
-        a {
-          text-decoration: none;
-        }
-        #content {
-            text-align: center;
-        }
-        img {
-            padding: 25px;
-            max-width: 95%;
-            max-height: 1080px;
-        }
-
-        #nav {
-            padding: 100px;
-        }
-
-        body {
-            text-align: center;
-            font-family: 'Courier New', Courier, monospace;
-        }
-        h1 {
-          font-size: 100px;
-        }
-        .sample {
-          display: inline;
-          color: palegreen;
-        }
-
-    </style>
-  </head>
-  <body>
-     <a href="index.html"> <h1>_</h1></a>
-     <div id="content">
-        {% for data in imagedata %}
-        <img src="{{data.html_path}}" alt="{{data.meta}}" filehash="{{data.file_hash}}" hash={{data.phash}}></img>
-        {% endfor %}
-     </div>
-
-     <div id="nav">
-        {% if index>0 and index<=max_index %}
-          <h2><a href="{{"index" if index-1==0 else index-1}}.html">PREV</a></h2>
-        {% endif %}
-        <br/>
-        <br/>
-        {% for pages in range(max_index+1) %} 
+   <head>
+      <title>_{{index+1}}</title>
+      <style>
+         a {
+         text-decoration: none;
+         color: black !important;
+         font-size: 35px;
+         padding: 10px;
+         font-size: 29px;
+         }
+         #content {
+         text-align: center;
+         }
+         img {
+         padding: 25px;
+         max-width: 95%;
+         max-height: 1080px;
+         transition: all 3s ease;
+         }
+         #nav {
+         padding: 100px;
+         }
+         .gray {
+         filter: grayscale(100%);
+         }
+         body {
+         text-align: center;
+         font-family: system-ui;
+         }
+         h1 {
+         font-size: 200px;
+         }
+         .sample {
+         display: inline;
+         color: palegreen;
+         }
+      </style>
+   </head>
+   <body>
+      <a href="index.html">
+         <h1>_</h1>
+      </a>
+      <div id="content">
+         {% for data in imagedata %}
+         <img class="gray" src="{{data.html_path}}" alt="{{data.meta}}" filehash="{{data.file_hash}}" hash={{data.phash}}></img>
+         {% endfor %}
+      </div>
+      <div id="nav">
+         {% if index>0 and index<=max_index %}
+         <h2><a href="{{"index" if index-1==0 else index-1}}.html">PREV</a></h2>
+         {% endif %}
+         <br/>
+         <br/>
+         {% for pages in range(max_index+1) %} 
          {% if index==pages%}
-          <b><a href="{{"index" if pages==0 else pages}}.html"> {{pages+1}}</a></b>
-          {% else %}
-          <a href="{{"index" if pages==0 else pages}}.html"> {{pages+1}}</a>
-          {% endif %}
-        {% endfor %}
-        <br/>
-        <br/>
-        {% if index>=0 and index <max_index %}
-        <h2><a href="{{index+1}}.html">NEXT</a></h2>
-        {% endif %}
-     </div>
-  </body>
+         <b><a href="{{"index" if pages==0 else pages}}.html"> {{pages+1}}</a></b>
+         {% else %}
+         <a href="{{"index" if pages==0 else pages}}.html"> {{pages+1}}</a>
+         {% endif %}
+         {% endfor %}
+         <br/>
+         <br/>
+         {% if index>=0 and index <max_index %}
+         <h2><a href="{{index+1}}.html">NEXT</a></h2>
+         {% endif %}
+      </div>
+      <script>
+         window.onscroll = function() {scrollLoad()};
+         function scrollLoad() {
+           var scrollPos = document.body.scrollTop + window.innerHeight
+           document.querySelectorAll("img").forEach(function(img) {
+             impos = img.getBoundingClientRect().top + window.scrollY + img.getBoundingClientRect().height/2
+             if (impos < scrollPos) {
+               img.setAttribute("class", "color")
+             }
+           });
+         }
+      </script>
+   </body>
 </html>
