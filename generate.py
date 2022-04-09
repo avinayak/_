@@ -79,7 +79,7 @@ def meta_alt(image):
 def calculate_perceptural_hash(image):
     """ Calculate the perceptual hash of an image """
     pil_image = resize_image(image)
-    return imagehash.colorhash(pil_image, binbits=16)
+    return imagehash.colorhash(pil_image, binbits=24)
 
 
 def generaate_image_metadata(image_path) -> UnderscoreImage:
@@ -112,7 +112,6 @@ def resize_image(img):
     tdims = (500, 500)
     im = Image.open(img)
     im = im.convert("RGB")
-    im = im.resize(tdims)
     return im
 
 
