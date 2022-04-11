@@ -11,6 +11,7 @@ from PIL import Image
 
 import imagehash
 import jinja2
+from sklearn.utils import shuffle
 from tqdm import tqdm
 from functools import wraps
 from time import time
@@ -79,7 +80,7 @@ def meta_alt(image):
 def calculate_perceptural_hash(image):
     """ Calculate the perceptual hash of an image """
     pil_image = resize_image(image)
-    return imagehash.colorhash(pil_image, binbits=24)
+    return imagehash.colorhash(pil_image, binbits=32)
 
 
 def generaate_image_metadata(image_path) -> UnderscoreImage:
@@ -145,21 +146,21 @@ def sort_greedy(imagedata):
 @timing
 def process_all_images(images):
     pool_obj = multiprocessing.Pool()
-    return pool_obj.map(generaate_image_metadata, images)
+    return list(tqdm(pool_obj.imap(generaate_image_metadata, images), total=len(images)))
 
 
 if __name__ == "__main__":
-    images = []
     template = jinja2.Environment(
         loader=jinja2.FileSystemLoader('./')
     ).get_template('template.html')
 
+    images = []
     for paths in [Path('docs').rglob(ext) for ext in required_extensions]:
         for path in paths:
             images.append(path.relative_to('.'))
 
     print("Generating metadata...")
-    imagedata = dedupe(process_all_images(images))
+    imagedata = shuffle(dedupe(process_all_images(images)))
 
     imagedata = sort_greedy(imagedata)
 
@@ -168,7 +169,7 @@ if __name__ == "__main__":
     print("Rendering pages...")
     for index, imageset in (enumerate(chunks(imagedata, NUM_IMAGES_PER_PAGE))):
         subs = template.render(title=index, imagedata=imageset,
-                               index=index, max_index=(len(images) // NUM_IMAGES_PER_PAGE))
+                               index=index, max_index=(len(imagedata) // NUM_IMAGES_PER_PAGE))
         output_file = "docs/{}.html".format(index)
         if index == 0:
             output_file = "docs/index.html"

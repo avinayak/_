@@ -469,7 +469,7 @@ def sanitize(path):
     # [todo:0] Handle case sensitive and reserved file names in Windows like Chrome "Save page as" do
     # For portable to move filename between linux <-> win, should use IS_WIN only (but still can't care if case sensitive filename move to case in-sensitive filesystem). 
     # IS_WIN:
-    path = path.replace('<', '').replace('>', '').replace('"', '\'').replace('?', '').replace('*', '').replace('/', '_').replace('\\', '_').replace('|', '_').replace(':', '_').replace('.', '_').replace("#", "_").strip()
+    path = path.replace('<', '').replace('>', '').replace('"', '\'').replace('?', '').replace('*', '').replace('/', '_').replace('\\', '_').replace('|', '_').replace(':', '_').replace('.', '_').replace("#", "_").strip().replace("%", "_").strip()
     # Linux:
     #path.replace('/', '|').replace(':', '_').replace('.', '_').strip()
 
