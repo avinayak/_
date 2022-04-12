@@ -5,13 +5,12 @@ import hashlib
 import multiprocessing
 
 from pathlib import Path
-from random import choice
+from random import choice, shuffle
 from dataclasses import dataclass, field
 from PIL import Image
 
 import imagehash
 import jinja2
-from sklearn.utils import shuffle
 from tqdm import tqdm
 from functools import wraps
 from time import time
