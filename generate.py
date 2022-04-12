@@ -159,7 +159,8 @@ if __name__ == "__main__":
             images.append(path.relative_to('.'))
 
     print("Generating metadata...")
-    imagedata = shuffle(dedupe(process_all_images(images)))
+    imagedata = dedupe(process_all_images(images))
+    shuffle(imagedata)
 
     imagedata = sort_greedy(imagedata)
 
