@@ -1,81 +1,117 @@
 <html>
-   <head>
-      <title>_{{index+1}}</title>
-      <style>
-         a {
+
+<head>
+   <title>_{{index}}</title>
+   <style>
+      .page-link {
          text-decoration: none;
          color: black !important;
          font-size: 35px;
          padding: 10px;
          font-size: 29px;
-         }
-         #content {
+      }
+
+      .thumb {
+         margin: -2px;
+      }
+
+      .thumb-container {
+         padding: 0px 100px;
+      }
+
+      #content {
          text-align: center;
-         }
-         img {
+      }
+
+      .gray, .color {
          padding: 25px;
          max-width: 95%;
          max-height: 1080px;
          transition: all 2s ease;
-         }
-         #nav {
+      }
+
+      #nav {
          padding: 100px;
-         }
-         .gray {
+      }
+
+      .gray {
          filter: grayscale(100%);
-         }
-         body {
+      }
+
+      body {
          text-align: center;
          font-family: system-ui;
-         }
-         h1 {
+      }
+
+      h1 {
          font-size: 200px;
-         }
-         .sample {
+      }
+
+      .sample {
          display: inline;
          color: palegreen;
-         }
-      </style>
-   </head>
-   <body>
-      <a href="index.html">
-         <h1>_</h1>
-      </a>
-      <div id="content">
-         {% for data in imagedata %}
-         <img class="gray" src="{{data.html_path}}" alt="{{data.meta}}" filehash="{{data.file_hash}}" hash={{data.phash}}></img>
-         {% endfor %}
+      }
+   </style>
+</head>
+
+<body>
+   <a class="page-link" href="index.html">
+      <h1>_</h1>
+   </a>
+   <div id="content">
+      {% if mode=="thumb" %}
+      <div class="thumb-container">
+         {% for i,data in enumerate(imagedata) %}
+    <a href="{{index_to_file(i)}}" >  <img class="thumb" src="thumbnails/{{data.file_hash}}.jpg"></img></a>
+      {% endfor %}
       </div>
-      <div id="nav">
-         {% if index>0 and index<=max_index %}
-         <h2><a href="{{"index" if index-1==0 else index-1}}.html">PREV</a></h2>
+      {% else %}
+
+      {% for data in imagedata %}
+      <img class="gray" src="{{data.html_path}}" alt="{{data.meta}}" filehash="{{data.file_hash}}"
+         hash={{data.phash}}></img>
+      {% endfor %}
+      {% endif %}
+   </div>
+   <div id="nav">
+      {% if index>0 and index<=max_index %} <h2><a class="page-link" href="{{" index" if index-1==0 else index-1}}.html">PREV</a></h2>
          {% endif %}
-         <br/>
-         <br/>
-         {% for pages in range(max_index+1) %} 
-         {% if index==pages%}
-         <b><a href="{{"index" if pages==0 else pages}}.html"> {{pages+1}}</a></b>
+         <br />
+         <br />
+         {% for pages in range(max_index+1) %}
+         {% if index==pages and mode!="thumb" %}
+         <b><a class="page-link" href="{{" index" if pages==0 else pages}}.html"> {{pages}}</a></b>
          {% else %}
-         <a href="{{"index" if pages==0 else pages}}.html"> {{pages+1}}</a>
+         <a class="page-link" href="{{" index" if pages==0 else pages}}.html"> {{pages}}</a>
          {% endif %}
          {% endfor %}
-         <br/>
-         <br/>
-         {% if index>=0 and index <max_index %}
-         <h2><a href="{{index+1}}.html">NEXT</a></h2>
+
+
+         {% if mode=="thumb"%}
+         <a class="page-link" href="thumb.html"> <b> *</b></a>
+
+
+
+         {% else %}
+         <a class="page-link" href="thumb.html"> *</a>
          {% endif %}
-      </div>
-      <script>
-         window.onscroll = function() {scrollLoad()};
-         function scrollLoad() {
-           var scrollPos = document.body.scrollTop + window.innerHeight
-           document.querySelectorAll("img").forEach(function(img) {
-             impos = img.getBoundingClientRect().top + window.scrollY + img.getBoundingClientRect().height/2
-             if (impos < scrollPos) {
+         <br />
+         <br />
+         {% if index>=0 and index <max_index %} <h2><a class="page-link" href="{{index+1}}.html">NEXT</a></h2>
+            {% endif %}
+   </div>
+   <script>
+      window.onscroll = function () { scrollLoad() };
+      function scrollLoad() {
+         var scrollPos = document.body.scrollTop + window.innerHeight
+         document.querySelectorAll(".gray").forEach(function (img) {
+            impos = img.getBoundingClientRect().top + window.scrollY + img.getBoundingClientRect().height / 2
+            if (impos < scrollPos) {
                img.setAttribute("class", "color")
-             }
-           });
-         }
-      </script>
-   </body>
+            }
+         });
+      }
+   </script>
+</body>
+
 </html>
