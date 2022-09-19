@@ -51,6 +51,9 @@
          display: inline;
          color: palegreen;
       }
+      .mainimg {
+         border-radius: 40px;
+      }
    </style>
 </head>
 
@@ -59,19 +62,14 @@
       <h1>_</h1>
    </a>
    <div id="content">
-      {% if mode=="thumb" %}
-      <div class="thumb-container">
-         {% for i,data in enumerate(imagedata) %}
-    <a href="{{index_to_file(i)}}" >  <img class="thumb" src="thumbnails/{{data.file_hash}}.jpg"></img></a>
-      {% endfor %}
-      </div>
-      {% else %}
+    
 
       {% for data in imagedata %}
-      <img class="gray" src="{{data.html_path}}" alt="{{data.meta}}" filehash="{{data.file_hash}}"
+      <span class="image-box">
+         <img class="gray mainimg" src="{{data.path[5:]}}" alt="{{data.meta}}" filehash="{{data.fhash}}"
          hash={{data.phash}}></img>
+      </span>
       {% endfor %}
-      {% endif %}
    </div>
    <div id="nav">
       {% if index>0 and index<=max_index %} <h2><a class="page-link" href="{{" index" if index-1==0 else index-1}}.html">PREV</a></h2>
@@ -79,35 +77,30 @@
          <br />
          <br />
          {% for pages in range(max_index+1) %}
-         {% if index==pages and mode!="thumb" %}
-         <b><a class="page-link" href="{{" index" if pages==0 else pages}}.html"> {{pages}}</a></b>
-         {% else %}
-         <a class="page-link" href="{{" index" if pages==0 else pages}}.html"> {{pages}}</a>
-         {% endif %}
-         {% endfor %}
-
-
-         {% if mode=="thumb"%}
-         <a class="page-link" href="thumb.html"> <b> *</b></a>
-
-
-
-         {% else %}
-         <a class="page-link" href="thumb.html"> *</a>
-         {% endif %}
+        
+ <a class="page-link" href="{{" index" if pages==0 else pages}}.html"> {{pages}}</a>
+ {% endfor %}
+       
          <br />
          <br />
          {% if index>=0 and index <max_index %} <h2><a class="page-link" href="{{index+1}}.html">NEXT</a></h2>
             {% endif %}
+            
    </div>
    <script>
+      window.onload = function () {
+         images =  document.querySelectorAll(".image-box")
+         images.forEach(image => {
+            
+         })
+      };
       window.onscroll = function () { scrollLoad() };
       function scrollLoad() {
          var scrollPos = document.body.scrollTop + window.innerHeight
          document.querySelectorAll(".gray").forEach(function (img) {
             impos = img.getBoundingClientRect().top + window.scrollY + img.getBoundingClientRect().height / 2
             if (impos < scrollPos) {
-               img.setAttribute("class", "color")
+               img.setAttribute("class", "color mainimg")
             }
          });
       }
