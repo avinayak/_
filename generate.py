@@ -43,7 +43,7 @@ def generate_metadata(image_path):
         img = imagefile.read()
         fhash = generate_hash(img)
         phash = str(imagehash.colorhash(
-            open_image_pil(image_path), binbits=32))
+            open_image_pil(image_path), binbits=16))
         return UnderscoreImage(image_path, fhash, phash)
 
 
@@ -102,7 +102,9 @@ if __name__ == "__main__":
 
     remove_files_with_extension("*.html")
 
-    shuffle(imagedata)
+    imagedata.sort(
+        key=lambda x: x.path.split("/")[-1], reverse=True
+    )
 
     max_index = len(imagedata) // NUM_IMAGES_PER_PAGE
     for index, imageset in (enumerate(chunks(imagedata, NUM_IMAGES_PER_PAGE))):

@@ -604,7 +604,7 @@ def get_output_file_path(url, arg_cut, fs_f_max, image_id, human_fname, save_dir
             .format(arg_cut, fs_f_max, pin_id_str + fpart_excluded_ext + '.' +  ext) ]), attrs=BOLD_ONLY, end='' )  
         raise
     #print('final f: ' + file_path)
-    return file_path
+    return ''.join([i if ord(i) < 256 else '_' for i in file_path])
 
 
 def download_img(image, save_dir, arg_force_update, IMG_SESSION, V_SESSION, PIN_SESSION, proxies, arg_cut, arg_el, fs_f_max):

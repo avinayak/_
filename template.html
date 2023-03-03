@@ -79,6 +79,7 @@
          {% for pages in range(max_index+1) %}
         
  <a class="page-link" href="{{" index" if pages==0 else pages}}.html"> {{pages}}</a>
+ {% if pages%10==0 and pages!=0 %} <br /> {% endif %}
  {% endfor %}
        
          <br />
