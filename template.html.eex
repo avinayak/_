@@ -1,0 +1,99 @@
+<html>
+   <head>
+      <title>_<%= index %></title>
+      <style>
+         .page-link {
+            text-decoration: none;
+            color: black !important;
+            font-size: 35px;
+            padding: 10px;
+            font-size: 29px;
+         }
+
+         .thumb {
+            margin: -2px;
+         }
+
+         .thumb-container {
+            padding: 0px 100px;
+         }
+
+         #content {
+            text-align: center;
+         }
+
+         .gray, .color {
+            padding: 25px;
+            max-width: 95%;
+            max-height: 1080px;
+            transition: all 2s ease;
+         }
+
+         #nav {
+            padding: 100px;
+         }
+
+         .gray {
+            filter: grayscale(100%);
+         }
+
+         body {
+            text-align: center;
+            font-family: system-ui;
+         }
+
+         h1 {
+            font-size: 200px;
+         }
+
+         .sample {
+            display: inline;
+            color: palegreen;
+         }
+         .mainimg {
+            border-radius: 40px;
+         }
+      </style>
+   </head>
+   <body>
+      <a class="page-link" href="index.html">
+         <h1>_</h1>
+      </a>
+      <div id="content">
+         <%= for url <- image_urls do %>
+         <span class="image-box">
+            <img class="gray mainimg" src="<%= url %>"></img>
+         </span>
+         <% end %>
+      </div>
+      <div id="nav">
+         <%= for page <- 0..total_pages do %>
+            <a class="page-link" href="<%= page  %>.html">
+               <%= if page == index do %>
+                  <u><%= page %></u>
+               <% else %>
+                  <%= page %>
+               <% end %>
+            </a>
+         <% end %>
+      </div>
+      <script>
+         window.onload = function () {
+            images =  document.querySelectorAll(".image-box")
+            images.forEach(image => {
+               
+            })
+         };
+         window.onscroll = function () { scrollLoad() };
+         function scrollLoad() {
+            var scrollPos = document.body.scrollTop + window.innerHeight
+            document.querySelectorAll(".gray").forEach(function (img) {
+               impos = img.getBoundingClientRect().top + window.scrollY + img.getBoundingClientRect().height / 2
+               if (impos < scrollPos) {
+                  img.setAttribute("class", "color mainimg")
+               }
+            });
+         }
+      </script>
+   </body>
+</html>
