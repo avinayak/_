@@ -1,6 +1,6 @@
 <html>
    <head>
-      <title>_<%= index %></title>
+      <title>_<%= page_index %></title>
       <style>
          .page-link {
             text-decoration: none;
@@ -67,9 +67,9 @@
          <% end %>
       </div>
       <div id="nav">
-         <%= for page <- 0..total_pages do %>
-            <a class="page-link" href="<%= page  %>.html">
-               <%= if page == index do %>
+         <%= for page <- page_names do %>
+            <a class="page-link" href="<%= page %>">
+               <%= if page == filename do %>
                   <u><%= page %></u>
                <% else %>
                   <%= page %>

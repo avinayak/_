@@ -29,30 +29,7 @@ defmodule Underscore do
       end)
     end)
 
-    IO.puts("Generating Pages")
-    File.rm_rf!("pages")
-    File.mkdir_p!("pages")
-
-    pin_chunks =
-      Enum.sort_by(pins, & &1["id"])
-      |> Enum.reverse()
-      |> Enum.chunk_every(100)
-
-    n_pages = Enum.count(pin_chunks) - 1
-
-    pin_chunks
-    |> Enum.with_index()
-    |> Enum.each(fn {pins, index} ->
-      IO.write(".")
-
-      html =
-        Html.make_html(index,
-          image_urls: Enum.map(pins, & &1["img_src"]),
-          total_pages: n_pages
-        )
-
-      File.write!("pages/#{index}.html", html)
-    end)
+    Html.make_html(pins)
 
     IO.puts("Done")
   end
