@@ -6,7 +6,7 @@ defmodule Underscore do
   }
 
   def main do
-    Store.write_object("underscore", "pins.json", Pins.fetch_and_store_pins())
+    # Store.write_object("underscore", "pins.json", Pins.fetch_and_store_pins())
 
     store_pin_keys = Store.downloaded_pin_keys()
     pins = Store.retrieve_pins()
