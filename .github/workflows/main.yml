@@ -32,6 +32,14 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         CLOUDFLARE_HOST: ${{ secrets.CLOUDFLARE_HOST }}
 
+    - name: Commit changes in 'docs' folder
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add ./docs
+        git diff --quiet && git diff --staged --quiet || git commit -m "_"
+        git push
+
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
