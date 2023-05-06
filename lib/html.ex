@@ -3,8 +3,8 @@ defmodule Underscore.Html do
 
   def make_html(pins) do
     IO.puts("Generating Pages")
-    File.rm_rf!("pages")
-    File.mkdir_p!("pages")
+    File.rm_rf!("docs")
+    File.mkdir_p!("docs")
 
     pin_chunks =
       Enum.sort_by(pins, & &1["id"])
@@ -48,7 +48,7 @@ defmodule Underscore.Html do
           page_names: page_names
         )
 
-      File.write!("pages/#{filename}", html)
+      File.write!("docs/#{filename}", html)
     end)
   end
 end
