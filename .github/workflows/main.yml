@@ -1,44 +1,39 @@
-# This is a basic workflow to help you get started with Actions
+name: Elixir Project and Publish
 
-name: fetch-pins-deploy
-
-# Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the master branch
+  workflow_dispatch: # Manual trigger
+  schedule:
+    - cron: '0 0 * * 0' # Runs every week
   push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+    branches:
+      - master # Push to master trigger
 
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
+  build_and_publish:
     runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
-      
-      - name: setup git config
-        run: |
-          git config user.name "_bot"
-          git config user.email "<>"
-          
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
-        run: |
-          cd $GITHUB_WORKSPACE
-          pip3 install -r requirements.txt
-          python3 downloader.py https://www.pinterest.jp/atulvinayak/pins/ -j 16 -d docs/images
-          python3 generate.py
-          git add -A
-          git commit -am "_" 
-          sleep 3 
-          git push
-          
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Elixir
+      uses: actions/setup-elixir@v1
+      with:
+        elixir-version: 1.12.3
+        otp-version: 24.0.4
+
+    - name: Install dependencies
+      run: mix deps.get
+
+    - name: Run Elixir project
+      run: mix underscore
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        CLOUDFLARE_HOST: ${{ secrets.CLOUDFLARE_HOST }}
+
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./pages
