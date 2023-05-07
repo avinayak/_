@@ -26,3 +26,5 @@ underscore-*.tar
 /tmp/
 
 .env
+
+.elixir_ls/

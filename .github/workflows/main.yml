@@ -38,7 +38,7 @@ jobs:
         git config --local user.name "GitHub Action"
         git add ./docs
         git diff --quiet && git diff --staged --quiet || git commit -m "_"
-        git push
+        git push --force
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
